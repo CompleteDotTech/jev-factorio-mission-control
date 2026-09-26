@@ -5,6 +5,14 @@ deployed and traced back to its source. The current deployment is jev-factorio-a
 [`16ab385`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/16ab385),
 which has been live since 2026-09-26 12:10Z.
 
+![Live JEV Mission Control overlay, OBS program output](art/jev-mission-control-overlay-live.png)
+
+*The full program output as streamed (scene **JEV Mission Control**, 1920x1080),
+captured from OBS on 2026-09-26 19:14 local time while running `16ab385`. The
+game video fills the center OBS COMPOSITION area and the overlay surrounds it.*
+
+The offline / maintenance slate:
+
 ![Offline / maintenance slate](art/jev-factorio-maintenance-v1.png)
 
 ## Where it came from
@@ -102,6 +110,7 @@ The SRT listener passphrases in `STS2.json`, `jev-obs/media.json` and
 `jev-obs/factorio-b-media.json` are replaced with `REDACTED`. None of these files
 contains a stream key or Twitch token. The relay and metadata scripts read those
 at runtime from the live OBS profile and browser cookie store. Recordings,
-screenshots, runtime status files and backups of the OBS profile are not included.
+runtime status files and backups of the OBS profile are not included. The only
+screenshot is the program-output capture shown at the top of this README.
 
 Factorio is a trademark of Wube Software. This project isn't affiliated with Wube.
