@@ -2,14 +2,17 @@
 
 The live broadcast overlay for the JEV AI Factorio stream, captured exactly as
 deployed and traced back to its source. The current deployment is jev-factorio-agent
-[`16ab385`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/16ab385),
-which has been live since 2026-09-26 12:10Z.
+[`6424661`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/6424661),
+which has been live since 2026-09-26 23:43Z.
 
 ![Live JEV Mission Control overlay, OBS program output](art/jev-mission-control-overlay-live.png)
 
 *The full program output as streamed (scene **JEV Mission Control**, 1920x1080),
-captured from OBS on 2026-09-26 19:14 local time while running `16ab385`. The
-game video fills the center OBS COMPOSITION area and the overlay surrounds it.*
+captured from OBS on 2026-09-26 23:43Z while running `6424661`. The
+game video fills the center OBS COMPOSITION area and the overlay surrounds it.
+The **Current objective** tree on the left counts milestones toward a first
+rocket launch: the controller's verified goals plus the research milestones
+seen along the way.*
 
 The offline / maintenance slate:
 
@@ -35,19 +38,28 @@ already running keeps its old scripts until it reloads.
 
 ### Source commit
 
-**Current, from 2026-09-26 12:10Z:** `jev_factorio/` is an exact copy of
+**Current, from 2026-09-26 23:43Z:** `jev_factorio/` is an exact copy of
 `src/jev_factorio/{__init__,dashboard,dashboard_mission}.py` and `dashboard_assets/`
-at [`16ab385`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/16ab385).
-That commit adds two PRs:
+at [`6424661`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/6424661).
+It adds two PRs to `16ab385`:
 
-- PR #86: item icons, plain-language events, a pending-check indicator, and
-  clearer observations and workflow.
-- PR #88: a one-line readiness panel in the studio layout.
+- PR #104: the objective tree shows 11 milestones instead of three fixed goals.
+  The controller's goals keep their verified ticks. Base-game research on the way
+  to the rocket (steam power, the science packs, oil processing, the rocket silo)
+  shows the tick it was first seen. Research already done when the dashboard
+  started watching shows as "Researched", with no tick.
+- PR #105: milestone names never clip in the OBS browser source.
 
 `jev_factorio/DEPLOYED_COMMIT` records the deployed commit on the VM. The unit
 runs `python3 -m jev_factorio.dashboard ... --icon-dir /opt/jev-mission-control/icons`.
-The files that served the stream before this deploy are kept in
-`theme-backups/20260926T120921Z-pre-16ab385/`.
+Each deploy's rollback copy is in `theme-backups/`:
+`20260926T234310Z-pre-6424661/` (`c454af6`, PR #104 only, live 23:37Z to 23:43Z),
+`20260926T233716Z-pre-c454af6/` (`16ab385`, live 12:10Z to 23:37Z), and
+`20260926T120921Z-pre-16ab385/`.
+
+**`16ab385`, 2026-09-26 12:10Z to 23:37Z:** added PR #86 (item icons,
+plain-language events, a pending-check indicator, and clearer observations and
+workflow) and PR #88 (a one-line readiness panel in the studio layout).
 
 **Previous, 2026-09-23 to 2026-09-26:** the flat `dashboard.py` and
 `dashboard_assets/` at the top of `/opt/jev-mission-control/` are still on disk
@@ -72,7 +84,7 @@ was hashed and matched to that repo's history:
   Mission Control app. They are still on disk but no longer serve the stream.
 
 The previous deployment did not include PR #68's launch-readiness panel or
-`mission.js`/`mission.css`. The current `16ab385` deployment does.
+`mission.js`/`mission.css`. Every deployment since `16ab385` does.
 
 ## Data flow
 

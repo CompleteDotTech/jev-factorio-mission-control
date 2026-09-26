@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A **snapshot of a live deployment** of the JEV Factorio stream's OBS overlay, not an actively developed source tree. Paths mirror the live filesystem roots: `obs-production/` is the OBS VM (`/etc`, `/opt`, `/home/ubuntu`), `train/` is the Train host (`~completetrain`). The upstream source is `CompleteDotTech/jev-factorio-agent` (`src/jev_factorio/`). Code changes belong there. This repo records what is actually deployed and where it came from.
 
 Keep it byte-faithful to the live system:
-- `obs-production/opt/jev-mission-control/jev_factorio/` must be an exact copy of the upstream commit named in `jev_factorio/DEPLOYED_COMMIT` (currently `16ab385`). Don't reformat, lint, or "fix" these files.
+- `obs-production/opt/jev-mission-control/jev_factorio/` must be an exact copy of the upstream commit named in `jev_factorio/DEPLOYED_COMMIT` (currently `6424661`). Don't reformat, lint, or "fix" these files.
 - `*.before-*` files and `theme-backups/<timestamp>/` are the deployment's own rollback copies. The flat `dashboard.py`/`dashboard_assets/` and `mission_control.py`/`mission_control_web/` at the top of `/opt/jev-mission-control/` are older versions that are still on disk but no longer served. Leave all of them as they are.
 - When the live deployment changes, update the snapshot, the systemd unit, `DEPLOYED_COMMIT`, and the README "Source commit" section together. Earlier commits show the pattern: they cite the upstream commit and PRs and note what was not included.
 
@@ -54,3 +54,14 @@ Inside `jev_factorio/`:
 - `dashboard_assets/` is vanilla JS with no bundler. `index.html` loads `explain.js`, `mission.js`, and `app.js` (in that order). `app.js` switches layouts with the `studio`/`overlay` query params.
 
 After a deploy, the OBS browser source must be refreshed manually. The server sends `no-store`, but a page that's already open keeps running its old JS.
+
+## Operating the live VM
+
+The OBS VM has no SSH access. Every command goes through the QEMU guest agent from the Train host: `virsh -c qemu:///system` on domain `obs-production`, or `guest_exec` in `train/.../deploy-factorio-broadcast-relay.py`.
+- **Keep each guest-exec's output well under 10 MB.** A larger output makes libvirt put the agent in an error state ("QEMU guest agent is not available due to an error"). That also stops the telemetry mirror, which uses the same channel. To recover without sudo, save the `org.qemu.guest_agent.0` `<channel>` XML from `virsh dumpxml`. Then run `virsh detach-device --live` with it, and `attach-device --live` with the output-only `state` attribute removed. The telemetry service resumes on its own.
+- **Refreshing the overlay after a deploy.** `~ubuntu/jev-obs/desktop-control.py` sends clicks through the GNOME RemoteDesktop portal and saves a snapshot to `desktop.png`. Run it as ubuntu with `XDG_RUNTIME_DIR=/run/user/1000` and `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus`.
+  - OBS runs in **Studio Mode**, with Program on *JEV Mission Control* and Preview normally on *JEV - Maintenance*.
+  - Single-click the *JEV Mission Control* scene, which changes only the Preview. Never use Transition or double-click, or the maintenance slate goes live on stream.
+  - Click **Refresh** in the source toolbar for *JEV Mission Control UI*.
+  - Click *JEV - Maintenance* again to restore the Preview.
+- **Taking a screenshot of the program output.** As ubuntu, `touch ~ubuntu/jev-obs/screenshot.request`. `jev-factorio.lua` calls `obs_frontend_take_screenshot()` and writes the file's path to `status.json`. The file saves under `/mnt/recordings/sts2/program/`. A request file owned by root can't be read by OBS and silently never fires.
