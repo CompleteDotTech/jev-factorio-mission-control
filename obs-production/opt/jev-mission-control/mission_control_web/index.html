@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Jev · Mission Control</title>
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#mission"><span class="brand-icon">J</span><span>JEV<span class="brand-sub">MISSION CONTROL</span></span></a>
+    <div class="nav-caption">OPERATIONS</div>
+    <nav aria-label="Dashboard sections">
+      <a class="selected" href="#mission"><span>◈</span> Mission overview</a>
+      <a href="#factory"><span>▦</span> Factory telemetry</a>
+      <a href="#activity"><span>≋</span> Activity & repairs</a>
+    </nav>
+    <div class="sidebar-footer"><span class="lock">◇</span><strong>Observer mode</strong><p>No game controls.<br>Real telemetry. No simulation.</p><span class="version">COMPLETETECH / JEV</span></div>
+  </aside>
+  <main>
+    <header class="topbar"><div><span class="eyebrow">FACTORIO / AUTONOMOUS CAMPAIGN</span><h1>Mission control<span class="title-dot">.</span></h1></div><div class="top-right"><span id="connection" class="badge neutral">Connecting</span><span id="clock" class="mono">—</span><button id="refresh" title="Fetch the latest read-only snapshot">↻ Refresh</button></div></header>
+    <div id="notice" role="status" aria-live="polite">Connecting to campaign telemetry…</div>
+    <section id="mission" aria-label="Mission overview">
+      <div class="hero panel">
+        <div><div class="eyebrow">PRIMARY OBJECTIVE</div><h2>From first ore<br>to <span>orbit.</span></h2><p>A native Factorio campaign, observed in real time.</p><div class="hero-tags"><span id="session">Session —</span><span id="policy">Policy —</span><span>READ ONLY</span></div></div>
+        <div class="mission-summary"><div class="eyebrow">CAMPAIGN WINDOW</div><div id="remaining" class="countdown">—</div><div id="deadline" class="muted">Waiting for deadline</div><div class="time-track"><div id="elapsed-bar"></div></div><div class="time-labels"><span id="started">START —</span><span>12-HOUR MISSION</span></div></div>
+      </div>
+      <div class="metrics">
+        <article class="metric panel"><div class="eyebrow">CONTROLLER</div><div id="status" class="metric-value">Unknown</div><div id="phase" class="metric-note">No status received</div></article>
+        <article class="metric panel"><div class="eyebrow">RESEARCH PROGRESS</div><div id="research-percent" class="metric-value">—</div><div id="research-name" class="metric-note">No observation</div></article>
+        <article class="metric panel"><div class="eyebrow">VERIFIED MILESTONES</div><div id="milestone-count" class="metric-value">—</div><div class="metric-note">Fuel → mining → rocket launch</div></article>
+        <article class="metric panel"><div class="eyebrow">GAME TICK</div><div id="tick" class="metric-value mono">—</div><div id="telemetry-age" class="metric-note">No observation</div></article>
+      </div>
+      <div class="overview-grid">
+        <article class="panel plan-panel"><div class="panel-heading"><h3>Current operation</h3><span id="dispatch" class="badge neutral">—</span></div><div id="operation" class="operation">Waiting for controller evidence</div><p id="operation-detail" class="muted">No actions can be dispatched from this dashboard.</p><div class="operation-bottom"><span id="goal">GOAL —</span><span id="polls">OBSERVATIONS —</span></div></article>
+        <article class="panel research-panel"><div class="panel-heading"><h3>Research uplink</h3><span class="small-label">NATIVE OBSERVATION</span></div><h4 id="research-title">No current research</h4><div class="research-track"><div id="research-bar"></div></div><div class="research-meta"><span id="research-completed">— technologies completed</span><span id="research-ratio">—</span></div><div id="milestones" class="milestones"></div></article>
+      </div>
+    </section>
+    <section id="factory" class="section">
+      <div class="section-heading"><div><div class="eyebrow">GROUND OPERATIONS</div><h2>Factory telemetry</h2></div><span class="small-label">LAST RECORDED OBSERVATION · NOT A VIDEO FEED</span></div>
+      <div class="factory-grid">
+        <article class="panel"><div class="panel-heading"><h3>Production network</h3><span id="machine-count" class="badge neutral">— machines</span></div><div class="table-wrap"><table><thead><tr><th>ENTITY / ROLE</th><th>STATE</th><th>INPUT / FUEL</th><th>OUTPUT</th></tr></thead><tbody id="machines"></tbody></table></div><p id="machine-empty" class="empty">Waiting for a factory observation.</p></article>
+        <article class="panel inventory-panel"><div class="panel-heading"><h3>Agent inventory</h3><span id="inventory-count" class="small-label">— ITEMS</span></div><div id="inventory"></div></article>
+      </div>
+    </section>
+    <section id="activity" class="section">
+      <div class="section-heading"><div><div class="eyebrow">EVIDENCE & RECOVERY</div><h2>Mission log</h2></div><span id="failure-count" class="small-label">Failure history preserved</span></div>
+      <div class="activity-grid">
+        <article class="panel"><div class="panel-heading"><h3>Controller activity</h3><span class="small-label">LATEST 12 EVENTS</span></div><div id="events" class="timeline"></div></article>
+        <article class="panel"><div class="panel-heading"><h3>Repair supervision</h3><span id="repair-attempt" class="badge neutral">—</span></div><p id="repair-state" class="muted">Waiting for supervisor evidence.</p><div id="repairs" class="repairs"></div></article>
+      </div>
+    </section>
+    <footer><span>JEV MISSION CONTROL <span class="footer-divider">/</span> Read-only, session-bound evidence</span><span id="updated">No snapshot received</span></footer>
+  </main>
+</body>
+</html>

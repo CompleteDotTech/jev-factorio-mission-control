@@ -1,0 +1,1 @@
+{"input": "srt://192.168.122.92:24020?mode=listener&latency=200000&passphrase=REDACTED&pbkeylen=16", "is_local_file": false, "input_format": "mpegts", "close_when_inactive": false, "hw_decode": false, "seekable": false, "looping": false, "clear_on_media_end": true, "restart_on_activate": false, "reconnect_delay_sec": 2, "buffering_mb": 2}

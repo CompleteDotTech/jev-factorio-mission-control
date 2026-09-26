@@ -1,0 +1,17 @@
+[Unit]
+Description=Jev read-only mission control
+After=network.target
+
+[Service]
+User=ubuntu
+ExecStart=/usr/bin/python3 /opt/jev-mission-control/mission_control.py serve --snapshot /var/lib/jev-mission-control/status.json --host 0.0.0.0 --port 8787
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/var/lib/jev-mission-control
+
+[Install]
+WantedBy=multi-user.target

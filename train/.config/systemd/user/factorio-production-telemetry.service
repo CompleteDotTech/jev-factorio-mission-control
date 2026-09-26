@@ -1,0 +1,9 @@
+[Unit]
+Description=Production Factorio read-only telemetry to OBS
+[Service]
+ExecStart=/usr/bin/python3 /home/completetrain/factorio-controller-replacement/factorio-production-telemetry.py
+Restart=on-failure
+RestartSec=5
+UMask=0077
+[Install]
+WantedBy=default.target

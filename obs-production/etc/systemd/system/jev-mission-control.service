@@ -1,0 +1,17 @@
+[Unit]
+Description=Jev mission control (merged PR 25, read-only)
+After=network.target
+
+[Service]
+User=ubuntu
+ExecStart=/usr/bin/python3 /opt/jev-mission-control/dashboard.py --log-file /var/lib/jev-mission-control/gameplay.jsonl --supervisor-state /var/lib/jev-mission-control/supervisor.json --port 8765
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/var/lib/jev-mission-control
+
+[Install]
+WantedBy=multi-user.target
