@@ -1,7 +1,9 @@
 # JEV Factorio Mission Control: OBS overlay
 
 The live broadcast overlay for the JEV AI Factorio stream, captured exactly as
-deployed on 2026-09-26 and traced back to its source.
+deployed and traced back to its source. The current deployment is jev-factorio-agent
+[`16ab385`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/16ab385),
+which has been live since 2026-09-26 12:10Z.
 
 ![Offline / maintenance slate](art/jev-factorio-maintenance-v1.png)
 
@@ -9,7 +11,8 @@ deployed on 2026-09-26 and traced back to its source.
 
 | Layer | Location on the live system | In this repo |
 | --- | --- | --- |
-| Overlay web app (`dashboard.py` + `dashboard_assets/`) | `obs-production` VM, `/opt/jev-mission-control/` | `obs-production/opt/jev-mission-control/` |
+| Overlay web app (package `jev_factorio/`) | `obs-production` VM, `/opt/jev-mission-control/jev_factorio/` | `obs-production/opt/jev-mission-control/jev_factorio/` |
+| Item icons (`--icon-dir`) | `/opt/jev-mission-control/icons/`, copied from Factorio 1.1.110 `data/base/graphics/icons` | **Not included**: these are Wube game assets |
 | Overlay service (`127.0.0.1:8765`) | `/etc/systemd/system/jev-mission-control.service` | `obs-production/etc/systemd/system/` |
 | OBS scene collection `STS2`, scene **JEV Mission Control** | `~ubuntu/.config/obs-studio/basic/scenes/STS2.json` | `obs-production/home/ubuntu/.config/...` (SRT passphrases redacted) |
 | OBS Lua scripts, media sources, relay, maintenance art | `~ubuntu/jev-obs/` | `obs-production/home/ubuntu/jev-obs/` |
@@ -18,9 +21,29 @@ deployed on 2026-09-26 and traced back to its source.
 
 The OBS browser source loads `http://127.0.0.1:8765/?studio=1&v=d02486c`.
 OBS draws that page over the native game video source, which sits under the
-transparent **OBS COMPOSITION** area.
+transparent **OBS COMPOSITION** area. After a deploy, reload the page with the
+source's **Refresh** button in OBS. The server sends `no-store`, but a page that is
+already running keeps its old scripts until it reloads.
 
 ### Source commit
+
+**Current, from 2026-09-26 12:10Z:** `jev_factorio/` is an exact copy of
+`src/jev_factorio/{__init__,dashboard,dashboard_mission}.py` and `dashboard_assets/`
+at [`16ab385`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/16ab385).
+That commit adds two PRs:
+
+- PR #86: item icons, plain-language events, a pending-check indicator, and
+  clearer observations and workflow.
+- PR #88: a one-line readiness panel in the studio layout.
+
+`jev_factorio/DEPLOYED_COMMIT` records the deployed commit on the VM. The unit
+runs `python3 -m jev_factorio.dashboard ... --icon-dir /opt/jev-mission-control/icons`.
+The files that served the stream before this deploy are kept in
+`theme-backups/20260926T120921Z-pre-16ab385/`.
+
+**Previous, 2026-09-23 to 2026-09-26:** the flat `dashboard.py` and
+`dashboard_assets/` at the top of `/opt/jev-mission-control/` are still on disk
+but no longer served. The rest of this section describes that version.
 
 The overlay app is built from
 [`CompleteDotTech/jev-factorio-agent`](https://github.com/CompleteDotTech/jev-factorio-agent)
@@ -40,8 +63,8 @@ was hashed and matched to that repo's history:
 - `mission_control.py` and `mission_control_web/` are the original PR #25
   Mission Control app. They are still on disk but no longer serve the stream.
 
-Later upstream work, such as PR #68's launch-readiness panel and
-`mission.js`/`mission.css`, is **not** in this deployment.
+The previous deployment did not include PR #68's launch-readiness panel or
+`mission.js`/`mission.css`. The current `16ab385` deployment does.
 
 ## Data flow
 
@@ -51,7 +74,7 @@ herdr-vm: podman session-home-complete-tech
       |  (Train: factorio-production-telemetry.service, read-only, QEMU guest agent)
       v
 obs-production VM: /var/lib/jev-mission-control/{gameplay.jsonl,supervisor.json}
-      |  (jev-mission-control.service -> dashboard.py :8765)
+      |  (jev-mission-control.service -> python3 -m jev_factorio.dashboard :8765)
       v
 OBS browser source "JEV Mission Control UI" -> Twitch
 ```
@@ -62,9 +85,13 @@ rendering, and it doesn't call models or control the game.
 ## Running the overlay locally
 
 ```
-python3 obs-production/opt/jev-mission-control/dashboard.py \
-  --log-file gameplay.jsonl --supervisor-state supervisor.json --port 8765
+cd obs-production/opt/jev-mission-control
+python3 -m jev_factorio.dashboard \
+  --log-file gameplay.jsonl --supervisor-state supervisor.json --port 8765 \
+  [--icon-dir /path/to/Factorio/data/base/graphics/icons]
 ```
+
+Without `--icon-dir`, inventory slots and events show item names instead of icons.
 
 Open `http://127.0.0.1:8765/?studio=1` (1920x1080 studio layout) or `/?overlay=1`.
 A missing log file is fine; the page shows its "awaiting evidence" state.

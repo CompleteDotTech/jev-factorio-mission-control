@@ -1,10 +1,12 @@
 [Unit]
-Description=Jev mission control (merged PR 25, read-only)
+Description=Jev mission control (jev-factorio-agent 16ab385, read-only)
 After=network.target
 
 [Service]
 User=ubuntu
-ExecStart=/usr/bin/python3 /opt/jev-mission-control/dashboard.py --log-file /var/lib/jev-mission-control/gameplay.jsonl --supervisor-state /var/lib/jev-mission-control/supervisor.json --port 8765
+WorkingDirectory=/opt/jev-mission-control
+Environment=PYTHONPATH=/opt/jev-mission-control
+ExecStart=/usr/bin/python3 -m jev_factorio.dashboard --log-file /var/lib/jev-mission-control/gameplay.jsonl --supervisor-state /var/lib/jev-mission-control/supervisor.json --port 8765 --icon-dir /opt/jev-mission-control/icons
 Restart=on-failure
 RestartSec=3
 NoNewPrivileges=true
