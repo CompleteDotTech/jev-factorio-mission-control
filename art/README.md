@@ -1,6 +1,8 @@
 # Art
 
-Both images are AI-generated and used as-is, with no edits.
+`factory-steel.png` and `jev-factorio-maintenance-v1.png` are AI-generated and used
+as-is, with no edits. `jev-mission-control-overlay-live.png` is a screenshot, not
+generated art.
 
 ## `factory-steel.png`
 
@@ -23,3 +25,11 @@ Generated with the built-in GPT image tool on 2026-09-21. Prompt, from upstream
 scene **JEV - Maintenance** (image source "JEV Maintenance Image", driven by
 `obs-maintenance-scene.lua`). Deployed at `~ubuntu/jev-obs/assets/`.
 AI-generated; the generation prompt was not recorded with the file.
+
+## `jev-mission-control-overlay-live.png`
+
+1920x1080 screenshot of the live OBS program output (scene **JEV Mission Control**)
+on 2026-09-26, while `16ab385` was deployed. It was taken with the
+`screenshot.request` trigger in `jev-factorio.lua`, which calls
+`obs_frontend_take_screenshot()`. OBS saved the original to
+`/mnt/recordings/sts2/program/`. The game footage in it is Factorio (Wube Software).
