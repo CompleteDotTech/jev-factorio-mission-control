@@ -2,8 +2,8 @@
 
 The live broadcast overlay for the JEV AI Factorio stream, captured exactly as
 deployed and traced back to its source. The current deployment is jev-factorio-agent
-[`1eb7e1d`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/1eb7e1d),
-which has been live since 2026-09-27 00:52Z.
+[`761ffc8`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/761ffc8),
+which has been live since 2026-09-27 02:09Z.
 
 ![Live JEV Mission Control overlay, OBS program output](art/jev-mission-control-overlay-live.png)
 
@@ -39,10 +39,11 @@ already running keeps its old scripts until it reloads.
 
 ### Source commit
 
-**Current, from 2026-09-27 00:52Z:** `jev_factorio/` is an exact copy of
-`src/jev_factorio/{__init__,dashboard,dashboard_mission}.py` and `dashboard_assets/`
-at [`1eb7e1d`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/1eb7e1d).
-It adds three PRs to `16ab385`:
+**Current, from 2026-09-27 02:09Z:** `jev_factorio/` is an exact copy of
+`src/jev_factorio/{__init__,dashboard,dashboard_mission,research_catalog}.py` and
+`dashboard_assets/` at
+[`761ffc8`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/761ffc8).
+It adds four PRs to `16ab385`:
 
 - PR #104: the objective tree shows 11 milestones instead of three fixed goals.
   The controller's goals keep their verified ticks. Base-game research on the way
@@ -53,10 +54,19 @@ It adds three PRs to `16ab385`:
 - PR #106: the top bar shows **RUN TIME** where it used to show the
   **CAMPAIGN CUTOFF** countdown. It counts up from the supervisor's `started_at`
   and stops at the cutoff.
+- PR #109: shows where the run is on the game's own research tree, for Factorio
+  1.1, 2.0.x and Space Age. A top-bar research strip shows the current research,
+  done/total technologies per science pack, and the count to the goal. The
+  objective milestones come from the tree. The tree arrives as a
+  `research-catalog.json` sidecar that the controller writes at startup and
+  the telemetry mirror copies over (see *Data flow*). The pinned production
+  controller (`f89407d`) predates it, so until the next controller deploy the
+  overlay shows the previous milestone view, and the strip stays hidden.
 
 `jev_factorio/DEPLOYED_COMMIT` records the deployed commit on the VM. The unit
 runs `python3 -m jev_factorio.dashboard ... --icon-dir /opt/jev-mission-control/icons`.
 Each deploy's rollback copy is in `theme-backups/`:
+`20260927T020935Z-pre-761ffc8/` (`1eb7e1d`, live 2026-09-27 00:52Z to 02:09Z),
 `20260927T005157Z-pre-1eb7e1d/` (`6424661`, live 2026-09-26 23:43Z to 2026-09-27 00:52Z),
 `20260926T234310Z-pre-6424661/` (`c454af6`, PR #104 only, live 23:37Z to 23:43Z),
 `20260926T233716Z-pre-c454af6/` (`16ab385`, live 12:10Z to 23:37Z), and
@@ -95,17 +105,19 @@ The previous deployment did not include PR #68's launch-readiness panel or
 
 ```
 herdr-vm: podman session-home-complete-tech
-  /workspace/jev-factorio-agent/.../runs/controller-production-*/{gameplay.jsonl,supervisor.json}
+  /workspace/jev-factorio-agent/.../runs/controller-production-*/{gameplay.jsonl,supervisor.json,research-catalog.json}
       |  (Train: factorio-production-telemetry.service, read-only, QEMU guest agent)
       v
-obs-production VM: /var/lib/jev-mission-control/{gameplay.jsonl,supervisor.json}
+obs-production VM: /var/lib/jev-mission-control/{gameplay.jsonl,supervisor.json,research-catalog.json}
       |  (jev-mission-control.service -> python3 -m jev_factorio.dashboard :8765)
       v
 OBS browser source "JEV Mission Control UI" -> Twitch
 ```
 
-The dashboard is read-only. It redacts credential-like keys and values before
-rendering, and it doesn't call models or control the game.
+The mirror copies `gameplay.jsonl` and `supervisor.json` every 3 s. It copies
+`research-catalog.json`, the game's technology tree, only when that file
+changes. The dashboard is read-only. It redacts credential-like keys and values
+before rendering, and it doesn't call models or control the game.
 
 ## Running the overlay locally
 
