@@ -2,17 +2,18 @@
 
 The live broadcast overlay for the JEV AI Factorio stream, captured exactly as
 deployed and traced back to its source. The current deployment is jev-factorio-agent
-[`6424661`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/6424661),
-which has been live since 2026-09-26 23:43Z.
+[`1eb7e1d`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/1eb7e1d),
+which has been live since 2026-09-27 00:52Z.
 
 ![Live JEV Mission Control overlay, OBS program output](art/jev-mission-control-overlay-live.png)
 
 *The full program output as streamed (scene **JEV Mission Control**, 1920x1080),
-captured from OBS on 2026-09-26 23:43Z while running `6424661`. The
+captured from OBS on 2026-09-27 00:52Z while running `1eb7e1d`. The
 game video fills the center OBS COMPOSITION area and the overlay surrounds it.
 The **Current objective** tree on the left counts milestones toward a first
 rocket launch: the controller's verified goals plus the research milestones
-seen along the way.*
+seen along the way. **RUN TIME** in the top bar shows how long the run has
+been going since the supervisor started it.*
 
 The offline / maintenance slate:
 
@@ -38,10 +39,10 @@ already running keeps its old scripts until it reloads.
 
 ### Source commit
 
-**Current, from 2026-09-26 23:43Z:** `jev_factorio/` is an exact copy of
+**Current, from 2026-09-27 00:52Z:** `jev_factorio/` is an exact copy of
 `src/jev_factorio/{__init__,dashboard,dashboard_mission}.py` and `dashboard_assets/`
-at [`6424661`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/6424661).
-It adds two PRs to `16ab385`:
+at [`1eb7e1d`](https://github.com/CompleteDotTech/jev-factorio-agent/commit/1eb7e1d).
+It adds three PRs to `16ab385`:
 
 - PR #104: the objective tree shows 11 milestones instead of three fixed goals.
   The controller's goals keep their verified ticks. Base-game research on the way
@@ -49,10 +50,14 @@ It adds two PRs to `16ab385`:
   shows the tick it was first seen. Research already done when the dashboard
   started watching shows as "Researched", with no tick.
 - PR #105: milestone names never clip in the OBS browser source.
+- PR #106: the top bar shows **RUN TIME** where it used to show the
+  **CAMPAIGN CUTOFF** countdown. It counts up from the supervisor's `started_at`
+  and stops at the cutoff.
 
 `jev_factorio/DEPLOYED_COMMIT` records the deployed commit on the VM. The unit
 runs `python3 -m jev_factorio.dashboard ... --icon-dir /opt/jev-mission-control/icons`.
 Each deploy's rollback copy is in `theme-backups/`:
+`20260927T005157Z-pre-1eb7e1d/` (`6424661`, live 2026-09-26 23:43Z to 2026-09-27 00:52Z),
 `20260926T234310Z-pre-6424661/` (`c454af6`, PR #104 only, live 23:37Z to 23:43Z),
 `20260926T233716Z-pre-c454af6/` (`16ab385`, live 12:10Z to 23:37Z), and
 `20260926T120921Z-pre-16ab385/`.

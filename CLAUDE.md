@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A **snapshot of a live deployment** of the JEV Factorio stream's OBS overlay, not an actively developed source tree. Paths mirror the live filesystem roots: `obs-production/` is the OBS VM (`/etc`, `/opt`, `/home/ubuntu`), `train/` is the Train host (`~completetrain`). The upstream source is `CompleteDotTech/jev-factorio-agent` (`src/jev_factorio/`). Code changes belong there. This repo records what is actually deployed and where it came from.
 
 Keep it byte-faithful to the live system:
-- `obs-production/opt/jev-mission-control/jev_factorio/` must be an exact copy of the upstream commit named in `jev_factorio/DEPLOYED_COMMIT` (currently `6424661`). Don't reformat, lint, or "fix" these files.
+- `obs-production/opt/jev-mission-control/jev_factorio/` must be an exact copy of the upstream commit named in `jev_factorio/DEPLOYED_COMMIT` (currently `1eb7e1d`). Don't reformat, lint, or "fix" these files.
 - `*.before-*` files and `theme-backups/<timestamp>/` are the deployment's own rollback copies. The flat `dashboard.py`/`dashboard_assets/` and `mission_control.py`/`mission_control_web/` at the top of `/opt/jev-mission-control/` are older versions that are still on disk but no longer served. Leave all of them as they are.
 - When the live deployment changes, update the snapshot, the systemd unit, `DEPLOYED_COMMIT`, and the README "Source commit" section together. Earlier commits show the pattern: they cite the upstream commit and PRs and note what was not included.
 
