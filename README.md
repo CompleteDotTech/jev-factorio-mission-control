@@ -8,12 +8,11 @@ which has been live since 2026-09-27 02:09Z.
 ![Live JEV Mission Control overlay, OBS program output](art/jev-mission-control-overlay-live.png)
 
 *The full program output as streamed (scene **JEV Mission Control**, 1920x1080),
-captured from OBS on 2026-09-27 00:52Z while running `1eb7e1d`. The
-game video fills the center OBS COMPOSITION area and the overlay surrounds it.
-The **Current objective** tree on the left counts milestones toward a first
-rocket launch: the controller's verified goals plus the research milestones
-seen along the way. **RUN TIME** in the top bar shows how long the run has
-been going since the supervisor started it.*
+captured from OBS on 2026-09-28 00:33Z with `761ffc8` deployed and the fresh
+Factorio 2.0.77 game running. The game video fills the center OBS COMPOSITION
+area. The top bar shows the game's research tree progress and **RUN TIME**
+counting up from this run's start. The **Current objective** tree on the left
+combines verified controller goals and research milestones.*
 
 The offline / maintenance slate:
 

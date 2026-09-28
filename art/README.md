@@ -29,7 +29,8 @@ AI-generated; the generation prompt was not recorded with the file.
 ## `jev-mission-control-overlay-live.png`
 
 1920x1080 screenshot of the live OBS program output (scene **JEV Mission Control**)
-on 2026-09-27 at 00:52Z, while `1eb7e1d` was deployed. It was taken with the
+on 2026-09-28 at 00:33Z, while `761ffc8` was deployed and the fresh Factorio
+2.0.77 game was running. It was taken with the
 `screenshot.request` trigger in `jev-factorio.lua`, which calls
 `obs_frontend_take_screenshot()`. OBS saved the original to
 `/mnt/recordings/sts2/program/`. The game footage in it is Factorio (Wube Software).
