@@ -60,8 +60,18 @@ It adds four PRs to `16ab385`:
   objective milestones come from the tree. The tree arrives as a
   `research-catalog.json` sidecar that the controller writes at startup and
   the telemetry mirror copies over (see *Data flow*). The pinned production
-  controller (`f89407d`) predates it, so until the next controller deploy the
-  overlay shows the previous milestone view, and the strip stays hidden.
+  controller (`f89407d`) predates the exporter. For the fresh game started at
+  2026-09-27 23:45Z, a one-time read-only export from the same upstream code
+  was placed in the run's supervision directory. The strip is now visible;
+  controller telemetry supplies current research progress. A new world, game
+  version, or mod set needs a fresh export until the controller is updated.
+
+The fresh Factorio 2.0.77 game uses telemetry session
+`cbd0e71ffc1d46788a97846273b275e5`. Its 48-hour run began at
+2026-09-27 23:45Z and is scheduled to end at 2026-09-29 23:45Z. The
+tracked `campaign.conf` records the session selected by the live Train
+telemetry service. The research sidecar is generated runtime data and is not
+stored in this snapshot.
 
 `jev_factorio/DEPLOYED_COMMIT` records the deployed commit on the VM. The unit
 runs `python3 -m jev_factorio.dashboard ... --icon-dir /opt/jev-mission-control/icons`.
