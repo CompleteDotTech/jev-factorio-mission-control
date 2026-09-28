@@ -158,16 +158,26 @@ The previous deployment did not include PR #68's launch-readiness panel or
 
 </details>
 
-## 🎨 The offline / maintenance slate
+## 📸 Screenshots & generated art
 
 <div align="center">
 
-![Offline / maintenance slate](art/jev-factorio-maintenance-v1.png)
+| Live program output | Offline / maintenance slate |
+| :---: | :---: |
+| [![Live JEV Mission Control overlay](art/jev-mission-control-overlay-live.png)](art/jev-mission-control-overlay-live.png) | [![Offline / maintenance slate](art/jev-factorio-maintenance-v1.png)](art/jev-factorio-maintenance-v1.png) |
+| Scene **JEV Mission Control** as streamed,<br>1920×1080, captured 2026-09-28 00:33Z | OBS scene **JEV - Maintenance**,<br>driven by `obs-maintenance-scene.lua` |
+
+<br>
+
+[![Factory-steel background texture](art/factory-steel.png)](art/factory-steel.png)
+
+*`factory-steel.png` — the dashboard's tiling background texture, served from
+`dashboard_assets/`.*
 
 </div>
 
-Generated art lives in [`art/`](art/), with each image's purpose, deploy location and exact
-generation prompt recorded in [`art/README.md`](art/README.md).
+All three images live in [`art/`](art/), with each one's purpose, size, deploy location and
+exact generation prompt recorded in [`art/README.md`](art/README.md).
 
 ## 🔒 Redactions
 
