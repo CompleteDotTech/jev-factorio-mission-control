@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/banner.jpg" alt="Pixel-art robot Jev at a mission-control console in front of a wall of glowing dials, gauges and screens" width="100%"></p>
+
 <div align="center">
 
 # 🏭 JEV Factorio Mission Control
